@@ -1,36 +1,44 @@
-<form 
-    hx-put = "/update-todo/{{ todo.id }}"
-    hx-target = "this"
-    hx-swap = "outerHTML"
->
-    <article class="flex{% if todo.is_done %} bg-indigo-100 opacity-50{% endif %} rounded-xl">
-        <div class="w-4/5 pt-3 pb-2">
-            <h3 class="px-6 text-s text-gray-900">{{ todo.title }}</h3>
-        </div>
+<article class="flex{% if todo.is_done %} bg-indigo-100 opacity-50{% endif %} rounded-xl">
+    <div class="w-4/5 pt-3 pb-2">
+        <h3 
+            class="px-6 text-s text-gray-900"
+            hx-get="/edit/{{ todo.id }}"
+            hx-target="this"
+            hx-swap="outerHTML"
+        >
+            {{ todo.title }}
+        </h3>
+    </div>
 
-        <div class="w-1/5 px-6 py-3 flex justify-end space-x-4">
-            {% if not todo.is_done %}
-                <button class="text-sky-700 hover:text-green-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-             {% endif %}
-            <a 
-                href="#" 
-                class="text-sky-700 hover:text-red-700"
-                hx-target="closest form"
-                hx-swap="outerHTML swap:0.5s"
-                hx-delete="/delete-todo/{{ todo.id }}"
-                hx-confirm="Are you certain you want to delete?"
+    <div class="w-1/5 px-6 py-3 flex justify-end space-x-4">
+        {% if not todo.is_done %}
+            <form 
+                hx-put = "/update-todo/{{ todo.id }}"
+                hx-target = "closest article"
+                hx-swap = "outerHTML"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" 
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <button class="text-sky-700 hover:text-green-700" title="Complete task">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                 </svg>
-                
-            </a>
-        </div>
-    </article>
-</form>
+            </button>
+            </form>
+            {% endif %}
+        <a 
+            href="#" 
+            title= "Delete task"
+            class="text-sky-700 hover:text-red-700"
+            hx-target="closest article"
+            hx-swap="outerHTML swap:0.5s"
+            hx-delete="/delete-todo/{{ todo.id }}"
+            hx-confirm="Are you certain you want to delete?"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" 
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            
+        </a>
+    </div>
+</article>

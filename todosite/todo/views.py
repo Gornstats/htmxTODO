@@ -20,8 +20,25 @@ def add_todo(request):
         return HttpResponse(status=204)    
     
     return render(request, 'todo/partials/todo.html', {'todo':todo})
-        
-        
+
+@require_http_methods(['GET', 'POST'])
+def edit_todo(request, pk):
+    todo = Todo.objects.get(pk=pk)
+    
+    if request.method == 'POST':
+        todo.title = request.POST.get('title','')
+        todo.save()
+    
+        return render(request, 'todo/partials/todo.html', {'todo':todo})
+    
+    return render(request, 'todo/partials/edit.html', {'todo':todo})
+
+@require_http_methods(['GET'])
+def cancel_edit(request, pk):
+    todo = Todo.objects.get(pk=pk)
+    
+    return render(request, 'todo/partials/todo.html', {'todo':todo})
+    
 @require_http_methods(['PUT'])
 def update_todo(request, pk):
     todo = Todo.objects.get(pk=pk)
